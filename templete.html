@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script type="text/javascript" src="art-template.js"></script>
+  </head>
+  <body>
+    Hello JSON
+  </body>
+  <script type="text/html" id="javaObjectTemplate">
+    public class {{name}} {{if superClass}} extends {{superClass}}{{/if}}  {
+      {{each properties}}{{set type = $value.type}}
+        {{if type == 'Object'}}
+        {{include 'javaObjectTemplate' $value}}
+        private {{$index[0].toUpperCase() + $index.slice(1)}} {{$index}};{{else}}
+        private {{$value.type}} {{$index}};
+        {{/if}}
+      {{/each}}{{each properties}}{{set firstUpperProperties = $index[0].toUpperCase() + $index.slice(1)}}
+        public void set{{firstUpperProperties}}({{$value.type}} {{$index}}) {
+          this.{{$index}} = {{$index}};
+        }
+
+        public {{$value.type}} get{{firstUpperProperties}}() {
+          return this.{{$index}};
+        }
+      {{/each}}
+    }
+  </script>
+  <script type="text/html" id="javaTemplate">
+    package {{packageName}};
+
+    import {{importClass}};
+
+    {{include 'javaObjectTemplate' this}}
+  </script>
+  <script type="text/javascript">
+    const Type = {
+      Object: "object",
+      String: "string",
+      Integer: "integer",
+      Boolean: "boolean",
+      Array: "array",
+    };
+
+    var package;
+
+    const JavaTemplate = `package ${package};`;
+
+    window.onload = function() {
+
+      var data = {
+        packageName: "com.tinkers",
+        importClass: "com.tinkers.common.htt.TKReq",
+        name: "AccountReq",
+        superClass: "TKReq",
+        type: "Object",
+        properties: {
+          total: {
+            type: "Integer",
+          },
+          accounts: {
+            type: "Object",
+            properties: {
+              accountId: {
+                type: "Integer",
+              },
+              age: {
+                type: "Integer",
+              },
+              name: {
+                type: "String",
+              },
+              sex: {
+                type: "Boolean",
+              },
+            },
+          },
+        },
+      };
+      var html = template('javaTemplate', data);
+      console.log(html);
+    };
+
+    function loadJson(url) {
+      var request = new XMLHttpRequest();
+      request.open("GET", url);
+      request.send(null);
+      request.onload = function() {
+        if (request.status == 200) {
+          var json = JSON.parse(request.responseText);
+          resBodyParse(json.res_body);
+        }
+      };
+    }
+  </script>
+</html>
