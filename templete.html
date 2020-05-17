@@ -7,7 +7,7 @@
     Hello JSON
   </body>
   <script type="text/html" id="javaObjectTemplate">
-    public class {{name}} {{if superClass}} extends {{superClass}}{{/if}}  {
+    public class {{name}} {{if superClass}}extends {{superClass}}{{/if}} {
       {{each properties}}{{set type = $value.type}}
         {{if type == 'Object'}}
         {{include 'javaObjectTemplate' $value}}
@@ -29,7 +29,6 @@
     package {{packageName}};
 
     import {{importClass}};
-
     {{include 'javaObjectTemplate' this}}
   </script>
   <script type="text/javascript">
@@ -46,38 +45,45 @@
     const JavaTemplate = `package ${package};`;
 
     window.onload = function() {
+      var html = template("javaTemplate", data);
+      console.log(html);
+    };
 
-      var data = {
-        packageName: "com.tinkers",
-        importClass: "com.tinkers.common.htt.TKReq",
-        name: "AccountReq",
-        superClass: "TKReq",
-        type: "Object",
-        properties: {
-          total: {
-            type: "Integer",
-          },
-          accounts: {
-            type: "Object",
-            properties: {
-              accountId: {
-                type: "Integer",
-              },
-              age: {
-                type: "Integer",
-              },
-              name: {
-                type: "String",
-              },
-              sex: {
-                type: "Boolean",
+    var data = {
+      packageName: "com.tinkers",
+      importClass: "com.tinkers.common.http.TKReq",
+      name: "AccountReq",
+      superClass: "TKReq",
+      type: "Object",
+      properties: {
+        data: {
+          name: "Data",
+          type: "Object",
+          properties: {
+            total: {
+              type: "Integer",
+            },
+            accounts: {
+              name: "Accounts",
+              type: "Object",
+              properties: {
+                accountId: {
+                  type: "Integer",
+                },
+                age: {
+                  type: "Integer",
+                },
+                name: {
+                  type: "String",
+                },
+                sex: {
+                  type: "Boolean",
+                },
               },
             },
           },
         },
-      };
-      var html = template('javaTemplate', data);
-      console.log(html);
+      },
     };
 
     function loadJson(url) {
