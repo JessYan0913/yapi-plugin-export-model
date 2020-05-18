@@ -6,24 +6,34 @@
   <body>
     Hello JSON
   </body>
+  <script type="text/html" id="javaListTemplate">
+    List<>
+  </script>
   <script type="text/html" id="javaObjectTemplate">
     public class {{name}} {{if superClass}}extends {{superClass}}{{/if}} {
         {{each properties}}{{set type = $value.type}}
-        {{if type == 'Object'}}
+        {{if type.toLowerCase() == 'object'}}
         {{include 'javaObjectTemplate' $value}}
         private {{$index[0].toUpperCase() + $index.slice(1)}} {{$index}};
-        {{else if type == 'Array'}}
+        {{else if type.toLowerCase() == 'array'}}
+        {{if $value.item.type.toLowerCase() == 'object'}}
         {{include 'javaObjectTemplate' $value.item}}
-        private List<{{$value.item.name[0].toUpperCase() + $value.item.name.slice(1)}}> {{$index}}
+        private List<{{$value.item.name}}> {{$index}};
+        {{else if $value.item.type.toLowerCase() == 'array'}}
+        private List<List<{{$value.item.item.type}}>> {{$index}};
+        {{else}}
+        private List<{{$value.item.type}}> {{$index}};
+        {{/if}}
         {{else}}
         private {{$value.type}} {{$index}};
         {{/if}}
-        {{/each}}{{each properties}}{{set firstUpperProperties = $index[0].toUpperCase() + $index.slice(1)}}
+        {{/each}}
+        {{each properties}}{{set firstUpperProperties = $index[0].toUpperCase() + $index.slice(1)}}
         public void set{{firstUpperProperties}}({{$value.type}} {{$index}}) {
           this.{{$index}} = {{$index}};
         }
 
-        public {{if $value.type == 'Object'}}{{firstUpperProperties}}{{else}}{{$value.type}}{{/if}} get{{firstUpperProperties}}() {
+        public {{if $value.type.toLowerCase() == 'object'}}{{firstUpperProperties}}{{else}}{{$value.type}}{{/if}} get{{firstUpperProperties}}() {
           return this.{{$index}};
         }
         {{/each}}
@@ -75,12 +85,21 @@
             total: {
               type: "Integer",
             },
-            // roles: {
-            //   type: "Array",
-            //   item: {
-            //     type: "Integer",
-            //   },
-            // },
+            roles: {
+              type: "Array",
+              item: {
+                type: "Integer",
+              },
+            },
+            menus: {
+              type: "Array",
+              item: {
+                type: "Array",
+                item: {
+                  type: "String",
+                },
+              },
+            },
             accounts: {
               type: "Array",
               item: {
