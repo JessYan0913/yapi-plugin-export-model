@@ -6,6 +6,17 @@
   <body>
     Hello JSON
   </body>
+  <!-- ios object template -->
+  <script type="text/html" id="iosObjectTemplate"></script>
+  <script type="text/html" id="iosTemplate">
+    {{each java.importClass}}
+    #import \"{{$value}}\";
+    {{/each}}
+    NS_ASSUME_NONNULL_BEGIN
+
+    NS_ASSUME_NONNULL_END
+  </script>
+  <!-- java object template -->
   <script type="text/html" id="javaListTemplate">
     List<{{if type.toLowerCase() == 'array'}}{{include 'javaListTemplate' item}}{{else}}{{type}}{{/if}}>
   </script>
@@ -27,21 +38,48 @@
         {{/if}}
         {{/each}}
         {{each properties}}
+        {{if $value.type.toLowerCase() == 'object'}}
+        public {{$value.name}} get{{$index[0].toUpperCase() + $index.slice(1)}}() {
+          return this.{{$index}};
+        }
+
+        public void set{{$index[0].toUpperCase() + $index.slice(1)}}({{$value.name}} {{$index}}) {
+          this.{{$index}} = {{$index}};
+        }
+        {{else if $value.type.toLowerCase() == 'array'}}
+        {{if $value.item.type.toLowerCase() == 'object'}}
+        public List<{{$value.item.name}}> get{{$index[0].toUpperCase() + $index.slice(1)}}() {
+          return this.{{$index}};
+        }
+
+        public void set{{$index[0].toUpperCase() + $index.slice(1)}}(List<{{$value.item.name}}> {{$index}}) {
+          this.{{$index}} = {{$index}};
+        }
+        {{else}}
+        public {{include 'javaListTemplate' $value.item}} get{{$index[0].toUpperCase() + $index.slice(1)}}() {
+          return this.{{$index}};
+        }
+
+        public void set{{$index[0].toUpperCase() + $index.slice(1)}}({{include 'javaListTemplate' $value.item}} {{$index}}) {
+          this.{{$index}} = {{$index}};
+        }
+        {{/if}}
+        {{else}}
+        public {{$value.type}} get{{$index[0].toUpperCase() + $index.slice(1)}}() {
+          return this.{{$index}};
+        }
+
         public void set{{$index[0].toUpperCase() + $index.slice(1)}}({{$value.type}} {{$index}}) {
           this.{{$index}} = {{$index}};
         }
-
-        public {{if $value.type.toLowerCase() == 'object'}}{{$index[0].toUpperCase() + $index.slice(1)}}{{else}}{{$value.type}}{{/if}} get{{firstUpperProperties}}() {
-          return this.{{$index}};
-        }
+        {{/if}}
         {{/each}}
     }
   </script>
   <script type="text/html" id="javaTemplate">
     {{if java.package != ''}}
     package {{java.packageName}};
-    {{/if}}
-    {{each java.importClass}}
+    {{/if}}{{each java.importClass}}
     import {{$value}};
     {{/each}}{{include 'javaObjectTemplate' this}}
   </script>
@@ -72,6 +110,18 @@
           properties: {
             total: {
               type: "Integer",
+            },
+            school: {
+              type: "Object",
+              name: "School",
+              properties: {
+                id: {
+                  type: "Integer",
+                },
+                name: {
+                  type: "String",
+                },
+              },
             },
             roles: {
               type: "Array",
