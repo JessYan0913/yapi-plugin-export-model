@@ -7,46 +7,43 @@
     Hello JSON
   </body>
   <script type="text/html" id="javaListTemplate">
-    List<>
+    List<{{if type.toLowerCase() == 'array'}}{{include 'javaListTemplate' item}}{{else}}{{type}}{{/if}}>
   </script>
   <script type="text/html" id="javaObjectTemplate">
     public class {{name}} {{if superClass}}extends {{superClass}}{{/if}} {
-        {{each properties}}{{set type = $value.type}}
-        {{if type.toLowerCase() == 'object'}}
+        {{each properties}}
+        {{if $value.type.toLowerCase() == 'object'}}
         {{include 'javaObjectTemplate' $value}}
         private {{$index[0].toUpperCase() + $index.slice(1)}} {{$index}};
-        {{else if type.toLowerCase() == 'array'}}
+        {{else if $value.type.toLowerCase() == 'array'}}
         {{if $value.item.type.toLowerCase() == 'object'}}
         {{include 'javaObjectTemplate' $value.item}}
         private List<{{$value.item.name}}> {{$index}};
-        {{else if $value.item.type.toLowerCase() == 'array'}}
-        private List<List<{{$value.item.item.type}}>> {{$index}};
         {{else}}
-        private List<{{$value.item.type}}> {{$index}};
+        private {{include 'javaListTemplate' $value.item}} {{$index}};
         {{/if}}
         {{else}}
         private {{$value.type}} {{$index}};
         {{/if}}
         {{/each}}
-        {{each properties}}{{set firstUpperProperties = $index[0].toUpperCase() + $index.slice(1)}}
-        public void set{{firstUpperProperties}}({{$value.type}} {{$index}}) {
+        {{each properties}}
+        public void set{{$index[0].toUpperCase() + $index.slice(1)}}({{$value.type}} {{$index}}) {
           this.{{$index}} = {{$index}};
         }
 
-        public {{if $value.type.toLowerCase() == 'object'}}{{firstUpperProperties}}{{else}}{{$value.type}}{{/if}} get{{firstUpperProperties}}() {
+        public {{if $value.type.toLowerCase() == 'object'}}{{$index[0].toUpperCase() + $index.slice(1)}}{{else}}{{$value.type}}{{/if}} get{{firstUpperProperties}}() {
           return this.{{$index}};
         }
         {{/each}}
     }
   </script>
   <script type="text/html" id="javaTemplate">
-    {{if java.package != ""}}
+    {{if java.package != ''}}
     package {{java.packageName}};
     {{/if}}
     {{each java.importClass}}
     import {{$value}};
-    {{/each}}
-    {{include 'javaObjectTemplate' this}}
+    {{/each}}{{include 'javaObjectTemplate' this}}
   </script>
   <script type="text/javascript">
     const Type = {
