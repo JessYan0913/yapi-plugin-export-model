@@ -1,0 +1,13 @@
+public class {{className}} {
+    {{each parameters}}
+    private {{$value.type}} {{$value.name}};
+    {{/each}}{{each parameters}}
+    public void set{{$value.name.replace(/^\S/, s => s.toUpperCase())}}({{$value.type}} {{$value.name}}) {
+        this.{{$value.name}} = {{$value.name}};
+    }
+
+    public {{$value.type}} get{{$value.name.replace(/^\S/, s => s.toUpperCase())}}() {
+        return this.{{$value.name}};
+    }
+    {{/each}}
+}

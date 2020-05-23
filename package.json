@@ -1,15 +1,11 @@
 {
   "name": "yapi-plugin-export-model",
   "version": "1.0.0",
-  "description": "Export the model corresponding to json (Android & iOS)",
+  "description": "export model",
   "main": "index.js",
   "scripts": {
     "test": "test",
     "start": "node server.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/JessYan0913/yapi-plugin-export-model.git"
   },
   "keywords": [
     "export",
@@ -17,12 +13,9 @@
   ],
   "author": "yh",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/JessYan0913/yapi-plugin-export-model/issues"
-  },
-  "homepage": "https://github.com/JessYan0913/yapi-plugin-export-model#readme",
   "dependencies": {
     "art-template": "^4.13.2",
-    "jszip": "^3.4.0"
+    "jszip": "^3.4.0",
+    "koa-art-template": "^1.1.1"
   }
 }
