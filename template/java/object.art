@@ -1,12 +1,16 @@
-public class {{className}} {
-    {{each parameters}}
-    private {{$value.type}} {{$value.name}};
-    {{/each}}{{each parameters}}
-    public void set{{$value.name.replace(/^\S/, s => s.toUpperCase())}}({{$value.type}} {{$value.name}}) {
+import java.util.List;
+
+public class {{javaClassName}} {{if fatherClass.java}}extends {{fatherClass.java}}{{/if}} {
+    {{each innerClassArray}}
+{{include './inner-object.art' $value}}
+    {{/each}}{{each paramArray}}
+    private {{@$value.type.java}} {{$value.name}};
+    {{/each}}{{each paramArray}}
+    public void set{{@$value.name.replace(/^\S/, s => s.toUpperCase())}}({{@$value.type.java}} {{$value.name}}) {
         this.{{$value.name}} = {{$value.name}};
     }
 
-    public {{$value.type}} get{{$value.name.replace(/^\S/, s => s.toUpperCase())}}() {
+    public {{@$value.type.java}} get{{$value.name.replace(/^\S/, s => s.toUpperCase())}}() {
         return this.{{$value.name}};
     }
     {{/each}}

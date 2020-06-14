@@ -1,0 +1,16 @@
+{{if fatherClass.oc}}#import "{{fatherClass.oc}}.h" {{else}}#import <Foundation/Foundation.h>{{/if}}
+
+NS_ASSUME_NONNULL_BEGIN
+{{each innerClassArray}}
+@protocol {{$value.ocClassName}};
+{{/each}}
+{{each innerClassArray}}
+{{include './inner-object-h.art' $value}}
+{{/each}}
+@interface {{ocClassName}} : {{if fatherClass.oc}}{{fatherClass.oc}}{{else}}JSONModel{{/if}}
+{{each paramArray}}
+@property (nonatomic) {{@$value.type.oc}}{{if $value.innerClass}}<Optional>{{/if}} {{if !$value.type.isBase}}*{{/if}}{{$value.name}};
+{{/each}}
+@end
+
+NS_ASSUME_NONNULL_END

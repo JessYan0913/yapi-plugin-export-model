@@ -1,6 +1,7 @@
-const exportModelController = require('./controller');
+const exportModelController = require('yapi-plugin-export-model/controller/exportModelController');
 
-module.exports = function(){
+module.exports = function(options){
+    global.options = options;
     this.bindHook('add_router', function(addRouter){
         addRouter({
             controller: exportModelController,
@@ -8,5 +9,5 @@ module.exports = function(){
             path: 'exportModel',
             action: 'exportData'
         })
-    })
+    });
 }

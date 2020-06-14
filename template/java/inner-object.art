@@ -1,0 +1,13 @@
+    public class {{javaClassName}} {
+        {{each paramArray}}
+        private {{@$value.type.java}} {{$value.name}};
+        {{/each}}{{each paramArray}}
+        public void set{{@$value.name.replace(/^\S/, s => s.toUpperCase())}}({{@$value.type.java}} {{$value.name}}) {
+            this.{{$value.name}} = {{$value.name}};
+        }
+
+        public {{@$value.type.java}} get{{$value.name.replace(/^\S/, s => s.toUpperCase())}}() {
+            return this.{{$value.name}};
+        }
+        {{/each}}
+    }

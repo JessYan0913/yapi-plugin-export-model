@@ -1,0 +1,5 @@
+@interface {{ocClassName}} : JSONModel
+{{each paramArray}}
+@property (nonatomic) {{@$value.type.oc}}{{if $value.innerClass}}<Optional>{{/if}} {{if !$value.type.isBase}}*{{/if}}{{$value.name}};
+{{/each}}
+@end

@@ -1,0 +1,12 @@
+#import "{{ocClassName}}.h"
+{{each imports}}
+#import "{{$value}}"
+{{/each}}
+@implementation {{ocClassName}}
+
+@end
+{{each innerClassArray}}
+@implementation {{$value.ocClassName}}
+
+@end
+{{/each}}
