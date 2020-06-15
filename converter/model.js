@@ -1,4 +1,4 @@
-const { bigCamelCase, javaClassName, ocClassName } = require('yapi-plugin-export-model/utils/stringUtils');
+const { bigCamelCase, javaClassName, ocClassName } = require('../utils/stringUtils');
 
 class JsonModel {
 

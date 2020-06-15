@@ -1,7 +1,7 @@
 const JSZip = require('jszip');
-const templateFacade = require('yapi-plugin-export-model/template/index');
-const { reqJson, resJson } = require('yapi-plugin-export-model/converter/jsonConverter');
-const { bigCamelCase } = require('yapi-plugin-export-model/utils/stringUtils');
+const templateFacade = require('../template/index');
+const { reqJson, resJson } = require('../converter/jsonConverter');
+const { bigCamelCase } = require('../utils/stringUtils');
 
 class modelService {
     constructor(apiList) {

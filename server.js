@@ -1,4 +1,4 @@
-const exportModelController = require('yapi-plugin-export-model/controller/exportModelController');
+const exportModelController = require('./controller/exportModelController');
 
 module.exports = function(options){
     global.options = options;

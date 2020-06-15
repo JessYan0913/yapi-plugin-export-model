@@ -1,5 +1,5 @@
 function bigCamelCase(str, suffix = '') {
-    return str.split(/-|\.|\//).filter((value) => { return value && value.trim() }).map((value) => {
+    return str.split(/-|_|\.|\//).filter((value) => { return value && value.trim() }).map((value) => {
         return value.replace(/^\S/, s => s.toUpperCase());
     }).join('') + suffix;
 }

@@ -3,7 +3,7 @@ const interfaceModel = require('models/interface.js');
 const projectModel = require('models/project.js');
 const interfaceCatModel = require('models/interfaceCat.js');
 const yapi = require('yapi.js');
-const exportModelService = require('yapi-plugin-export-model/service/exportModelService');
+const exportModelService = require('../service/exportModelService');
 
 class exportModelController extends baseController {
     constructor(ctx) {

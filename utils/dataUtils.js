@@ -1,4 +1,4 @@
-const { bigCamelCase } = require('yapi-plugin-export-model/utils/stringUtils');
+const { bigCamelCase } = require('../utils/stringUtils');
 
 class DataType {
 

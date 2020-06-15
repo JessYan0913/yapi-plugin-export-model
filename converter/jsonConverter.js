@@ -1,6 +1,6 @@
-const { bigCamelCase, javaClassName, ocClassName } = require('yapi-plugin-export-model/utils/stringUtils');
-const dataType = require('yapi-plugin-export-model/utils/dataUtils');
-const Model = require('yapi-plugin-export-model/converter/model');
+const { bigCamelCase, javaClassName, ocClassName } = require('../utils/stringUtils');
+const dataType = require('../utils/dataUtils');
+const Model = require('../converter/model');
 
 /**
  * 处理Query数据
