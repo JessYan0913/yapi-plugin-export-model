@@ -4,6 +4,10 @@ function bigCamelCase(str, suffix = '') {
     }).join('') + suffix;
 }
 
+function smallCamelCase(str, suffix = '') {
+    return bigCamelCase(str, suffix).replace(/^\S/, s => s.toLowerCase());
+}
+
 function javaClassName(str, suffix = '') {
     let classArray = str.split(/-|\.|\//).filter((value) => { return value && value.trim() }).map((value) => {
         return value.replace(/^\S/, s => s.toUpperCase());
@@ -20,6 +24,7 @@ function ocClassName(str, suffix = '') {
 
 module.exports = {
     bigCamelCase: bigCamelCase,
+    smallCamelCase: smallCamelCase,
     javaClassName: javaClassName,
     ocClassName: ocClassName
 };

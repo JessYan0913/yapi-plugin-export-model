@@ -1,4 +1,4 @@
-const { bigCamelCase, javaClassName, ocClassName } = require('../utils/stringUtils');
+const { bigCamelCase, smallCamelCase, javaClassName, ocClassName } = require('../utils/stringUtils');
 const dataType = require('../utils/dataUtils');
 const Model = require('../converter/model');
 
@@ -15,13 +15,13 @@ function processQuery(apiBody, className) {
         let paramArray = [];
         for (let p of apiBody.req_query) {
             paramArray.push({
-                name: p.name,
+                name: smallCamelCase(p.name),
                 type: dataType.string
             });
         }
         for (let p of apiBody.req_params) { //Path parameters
             paramArray.push({
-                name: p.name,
+                name: smallCamelCase(p.name),
                 type: dataType.string
             });
         }
@@ -81,7 +81,7 @@ function processForm(apiBody, className) {
         let paramArray = [];
         for (let p of apiBody.req_body_form) {
             paramArray.push({
-                name: p.name,
+                name: smallCamelCase(p.name),
                 type: p.type === 'text' ? dataType.string : dataType.file //in this time .formData type have only text or file
             });
         }
@@ -149,7 +149,7 @@ function processJsonObject(jsonParam, innerClassArray, className) {
                 innerClassArray.push(processJsonObject(property, innerClassArray, className + "." + key));
                 paramArray.push({
                     innerClass: className + "." + key,
-                    name: key,
+                    name: smallCamelCase(key),
                     type: dataType.get(key)
                 });
             } else if (property.type === 'array') {
@@ -161,16 +161,16 @@ function processJsonObject(jsonParam, innerClassArray, className) {
                         innerClassArray.map((value) => { return value.className }).indexOf(resultObject.className) > -1 ?
                         {
                             innerClass: resultObject.className,
-                            name: key,
+                            name: smallCamelCase(key),
                             type: dataType.other(javaArrayType, ocArrayType)
                         } : {
-                            name: key,
+                            name: smallCamelCase(key),
                             type: dataType.other(javaArrayType, ocArrayType)
                         }
                 );
             } else {
                 paramArray.push({
-                    name: key,
+                    name: smallCamelCase(key),
                     type: dataType.get(jsonParam.properties[key].type)
                 });
             }
