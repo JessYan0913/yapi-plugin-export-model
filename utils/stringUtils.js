@@ -5,7 +5,9 @@ function bigCamelCase(str, suffix = '') {
 }
 
 function smallCamelCase(str, suffix = '') {
-    return bigCamelCase(str, suffix).replace(/^\S/, s => s.toLowerCase());
+    return str.split(/-|_|\.|\//).filter((value) => { return value && value.trim() }).map((value) => {
+        return value.replace(/^\S/, s => s.toUpperCase());
+    }).join('').replace(/^\S/, s => s.toLowerCase()) + suffix;
 }
 
 function javaClassName(str, suffix = '') {
