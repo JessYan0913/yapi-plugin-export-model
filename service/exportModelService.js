@@ -1,5 +1,6 @@
 const JSZip = require('jszip');
-const templateFacade = require('../template/index');
+const templateFacade = require('../template/facade');
+const JsonModel = require('../model/jsonModel');
 const { reqJson, resJson } = require('../converter/jsonConverter');
 const { bigCamelCase } = require('../utils/stringUtils');
 
@@ -27,6 +28,9 @@ class modelService {
     }
 
     generateModel(model, dirName) {
+        if (!(model instanceof JsonModel)) {
+            return;
+        }
         let className = model.object.className;
         let template = new templateFacade(model.object);
 

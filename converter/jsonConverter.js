@@ -1,6 +1,6 @@
 const { bigCamelCase, smallCamelCase, javaClassName, ocClassName } = require('../utils/stringUtils');
 const dataType = require('../utils/dataUtils');
-const Model = require('../converter/model');
+const JsonModel = require('../model/jsonModel');
 
 /**
  * 处理Query数据
@@ -9,7 +9,7 @@ const Model = require('../converter/model');
  * @param {str} className
  */
 function processQuery(apiBody, className) {
-    let model = new Model();
+    let model = new JsonModel();
     model.className = className;
     model.paramArray = (() => {
         let paramArray = [];
@@ -36,7 +36,7 @@ function processQuery(apiBody, className) {
  * @param {str} className
  */
 function processRaw(className) {
-    let model = new Model();
+    let model = new JsonModel();
     model.className = className;
     model.paramArray = (() => {
         let paramArray = [];
@@ -55,7 +55,7 @@ function processRaw(className) {
  * @param {str} className
  */
 function processFile(className) {
-    let model = new Model();
+    let model = new JsonModel();
     model.className = className;
     model.paramArray = (() => {
         let paramArray = [];
@@ -75,7 +75,7 @@ function processFile(className) {
  * @param {str} className
  */
 function processForm(apiBody, className) {
-    let model = new Model();
+    let model = new JsonModel();
     model.className = className;
     model.paramArray = (() => {
         let paramArray = [];
@@ -97,7 +97,7 @@ function processForm(apiBody, className) {
  * @param {json} jsonParam
  */
 function processJson(className, jsonParam) {
-    let model = new Model();
+    let model = new JsonModel();
     let innerClassArray = [];
     if (jsonParam && jsonParam.type) {
         switch (jsonParam.type) {
@@ -135,7 +135,7 @@ function processJson(className, jsonParam) {
  * @param {str} className 主类的名称
  */
 function processJsonObject(jsonParam, innerClassArray, className) {
-    let model = new Model();
+    let model = new JsonModel();
     className = className || "";
     innerClassArray = innerClassArray || [];
 
@@ -188,7 +188,7 @@ function processJsonObject(jsonParam, innerClassArray, className) {
  * @param {str} className 主类名称
  */
 function processJsonArray(array, innerClassArray, className) {
-    let model = new Model();
+    let model = new JsonModel();
     model.className = className;
     let paramArray = [];
 
@@ -260,7 +260,7 @@ function reqJson(apiBody) {
         oc: ''
     };
     let className = bigCamelCase(apiBody.path, "Req");
-    let model = new Model();
+    let model = new JsonModel();
     switch (apiBody.req_body_type) {
         case 'form':
             model = processForm(apiBody, className);
@@ -297,7 +297,7 @@ function resJson(apiBody) {
         oc: ''
     };
     let className = bigCamelCase(apiBody.path, "Res");
-    let model = new Model();
+    let model = new JsonModel();
     if (apiBody.res_body) {
         let jsonParam = JSON.parse(apiBody.res_body);
         model = processJson(className, jsonParam);
