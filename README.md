@@ -68,17 +68,17 @@
 - 启动开发环境服务器
   
     ```shell
-    cd vendors
+    cd yapi源码目录/vendors
   
     ykit pack -m
     
     npm run dev
     ```
     
-  - 启动生产环境服务器
+ - 启动生产环境服务器
   
     ```shell
-    cd vendors
+    cd yapi源码目录/vendors
   
     ykit pack -m
     
