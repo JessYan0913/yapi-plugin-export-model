@@ -160,7 +160,7 @@ function processJsonObject(jsonParam, innerClassArray, className) {
                     resultObject &&
                         innerClassArray.map((value) => { return value.className }).indexOf(resultObject.className) > -1 ?
                         {
-                            innerClass: resultObject.className,
+                            innerClass: resultObject.object.className,
                             name: smallCamelCase(key),
                             type: dataType.other(javaArrayType, ocArrayType)
                         } : {
