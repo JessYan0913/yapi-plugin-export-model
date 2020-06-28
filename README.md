@@ -65,25 +65,25 @@
 
   > yapi 项目源码有时可能出现npm run dev前端页面显示空白的问题，所以需要每次都先打包ykit pack -m，再用运行代码。
   
-- 启动开发环境服务器
+  - 启动开发环境服务器
   
-    ```shell
-    cd yapi源码目录/vendors
-  
-    ykit pack -m
+      ```shell
+      cd yapi源码目录/vendors
+
+      ykit pack -m
+
+      npm run dev
+      ```
     
-    npm run dev
-    ```
-    
- - 启动生产环境服务器
+  - 启动生产环境服务器
   
-    ```shell
-    cd yapi源码目录/vendors
-  
-    ykit pack -m
-    
-    node server/app.js
-    ```
+      ```shell
+      cd yapi源码目录/vendors
+
+      ykit pack -m
+
+      node server/app.js
+      ```
 
 ##  配置插件
 
