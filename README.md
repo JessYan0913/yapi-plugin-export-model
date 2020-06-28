@@ -10,37 +10,84 @@
   npm install -g ykit
   ```
 
-- 安装yapi（已经装过的请忽略）
+- 安装yapi（已经装过的请忽略，若未安装可参考[YApi可视化接口管理平台](https://github.com/YMFE/yapi)，或[YApi二次开发](https://hellosean1025.github.io/yapi/documents/redev.html)）
 
   ```shell
   npm install -g yapi-cli --registry https://registry.npm.taobao.org
+  yapi server
   ```
+
+  > Yapi 目录结构
+  >
+  > ```shell
+  > |-- config.json
+  > |-- init.lock
+  > |-- log
+  > `-- vendors
+  >     |-- CHANGELOG.md
+  >     |-- LICENSE
+  >     |-- README.md
+  >     |-- client
+  >     |-- common
+  >     |-- config_example.json
+  >     |-- doc
+  >     |-- exts
+  >     |-- nodemon.json
+  >     |-- npm-debug.log
+  >     |-- package.json
+  >     |-- plugin.json
+  >     |-- server
+  >     |-- static
+  >     |-- test
+  >     |-- webpack.alias.js
+  >     |-- yapi-base-flow.jpg
+  >     |-- ydocfile.js
+  >     `-- ykit.config.js
+  > ```
+
+- 确保yapi可启动（可正常启动的请忽略，启动参考[YApi可视化接口管理平台](https://github.com/YMFE/yapi)，或[YApi二次开发](https://hellosean1025.github.io/yapi/documents/redev.html)）
 
 - 安装插件
 
   ```shell
   git clone https://github.com/JessYan0913/yapi-plugin-export-model.git
-
-  mv yapi-plugin-export-model ~/yapi/vendors/node_modules/yapi-plugin-export-model
-
-  cd ~/yapi/vendors
-
+  
+  cd yapi-plugin-export-model
+  
   npm install
+  
+  cd ..
+  
+  mv yapi-plugin-export-model yapi源码目录/vendors/node_modules/yapi-plugin-export-model
   ```
 
 - 重启`Yapi`服务
 
-  ```shell
-  npm install
-
-  ykit pack -m
-
-  node server/app.js
-  ```
+  > yapi 项目源码有时可能出现npm run dev前端页面显示空白的问题，所以需要每次都先打包ykit pack -m，再用运行代码。
+  
+- 启动开发环境服务器
+  
+    ```shell
+    cd vendors
+  
+    ykit pack -m
+    
+    npm run dev
+    ```
+    
+  - 启动生产环境服务器
+  
+    ```shell
+    cd vendors
+  
+    ykit pack -m
+    
+    node server/app.js
+    ```
 
 ##  配置插件
 
-在`yapi`的根目录下找到`config.json`文件，在`plugins`配置项，加入`yapi-plugin-export-model`插件，
+在`yapi`的根目录下找到`config.json`文件，在`plugins`配置项，加入`yapi-plugin-export-model`插件。
 
 ```shell
 {
@@ -66,11 +113,9 @@
 }
 ```
 
-
-
 > `baseRequest`和`baseResponse`是`RequestModel`和`ResponseModel`的基类配置，即所有的`RequestModel`和 `ResponseModel`对象都会继承该配置的类型。
 >
-> `baseRequest`和`baseResponse`是非必须配置。
+> 若无基类，可忽略`baseRequest`和`baseResponse`配置。
 
 ## 导出Model
 
@@ -85,16 +130,17 @@
 ```shell
 |-model
   |-Android
-  |  |-APITest
-  |  |  |-APITestReq.java
-  |  |  |-APITestRes.java
+  |  |-JsonObject
+  |  |  |-JsonObjectReq.java
+  |  |  |-JsonObjectRes.java
   |-iOS
-  |  |-APITest
-  |  |  |-APITestReq.h
-  |  |  |-APITestReq.m
-  |  |  |-APITestRes.h
-  |  |  |-APITestRes.m
+  |  |-JsonObject
+  |  |  |-JsonObjectReq.h
+  |  |  |-JsonObjectReq.m
+  |  |  |-JsonObjectRes.h
+  |  |  |-JsonObjectRes.m
 ```
+
 
 ## API示例
 
@@ -143,11 +189,6 @@
 
 ## Model示例
 
-### Coding规约
-
-- 类名和文件名采用大驼峰命名
-- 属性名采用小驼峰命名
-
 ### Android
 
 - Request
@@ -160,121 +201,120 @@ import java.util.List;
 public class JsonObjectReq extends TKReq {
 
     public class Array {
-
+    
         private String title;
-
+    
         public void setTitle(String title) {
             this.title = title;
         }
-
+    
         public String getTitle() {
             return this.title;
         }
-
+    
     }
-
+    
     public class Object1Object2 {
-
+    
         private String id;
-
+    
         private String age;
-
+    
         public void setId(String id) {
             this.id = id;
         }
-
+    
         public String getId() {
             return this.id;
         }
-
+    
         public void setAge(String age) {
             this.age = age;
         }
-
+    
         public String getAge() {
             return this.age;
         }
-
+    
     }
-
+    
     public class Object1 {
-
+    
         private String id;
-
+    
         private Object2 object2;
-
+    
         public void setId(String id) {
             this.id = id;
         }
-
+    
         public String getId() {
             return this.id;
         }
-
+    
         public void setObject2(Object2 object2) {
             this.object2 = object2;
         }
-
+    
         public Object2 getObject2() {
             return this.object2;
         }
-
+    
     }
-
+    
     private int id;
-
+    
     private String name;
-
+    
     private List<Array> array;
-
+    
     private List<List<String>> field1;
-
+    
     private Object1 object1;
-
+    
     public void setId(int id) {
         this.id = id;
     }
-
+    
     public int getId() {
         return this.id;
     }
-
+    
     public void setName(String name) {
         this.name = name;
     }
-
+    
     public String getName() {
         return this.name;
     }
-
+    
     public void setArray(List<Array> array) {
         this.array = array;
     }
-
+    
     public List<Array> getArray() {
         return this.array;
     }
-
+    
     public void setField1(List<List<String>> field1) {
         this.field1 = field1;
     }
-
+    
     public List<List<String>> getField1() {
         return this.field1;
     }
-
+    
     public void setObject1(Object1 object1) {
         this.object1 = object1;
     }
-
+    
     public Object1 getObject1() {
         return this.object1;
     }
 
 }
+
 ```
-
-
 
 - Response
 
