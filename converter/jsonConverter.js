@@ -146,16 +146,16 @@ function processJsonObject(jsonParam, innerClassArray, className) {
         for (var key in jsonParam.properties) {
             let property = jsonParam.properties[key];
             if (property.type === 'object') {
-                innerClassArray.push(processJsonObject(property, innerClassArray, className + "." + key));
+                innerClassArray.push(processJsonObject(property, innerClassArray, `${className}.${key}`));
                 paramArray.push({
-                    innerClass: className + "." + key,
+                    innerClass: `${className}.${key}`,
                     name: smallCamelCase(key),
-                    type: dataType.get(key)
+                    type: dataType.other(`${className}.${key}`, `${className}.${key}`)
                 });
             } else if (property.type === 'array') {
-                var resultObject = processJsonArray(property, innerClassArray, className + '.' + key);
-                var javaArrayType = processJavaArrayType(property.items, key, '');
-                var ocArrayType = processOcArrayType(property.items, key, '');
+                var resultObject = processJsonArray(property, innerClassArray, `${className}.${key}`);
+                var javaArrayType = processJavaArrayType(property.items, `${className}.${key}`, '');
+                var ocArrayType = processOcArrayType(property.items, `${className}.${key}`, '');
                 paramArray.push(
                     resultObject &&
                         innerClassArray.map((value) => { return value.className }).indexOf(resultObject.className) > -1 ?
@@ -261,23 +261,26 @@ function reqJson(apiBody) {
     };
     let className = bigCamelCase(apiBody.path, "Req");
     let model = new JsonModel();
-    switch (apiBody.req_body_type) {
-        case 'form':
-            model = processForm(apiBody, className);
-            break;
-        case 'file':
-            model = processFile(className);
-            break;
-        case 'raw':
-            model = processRaw(className);
-            break;
-        case 'json':
-            var jsonParam = JSON.parse(apiBody.req_body_other);
-            model = processJson(className, jsonParam);
-            break;
-        default:
-            model = processQuery(apiBody, className);
-            break;
+    if (apiBody.method === 'GET') {
+        model = processQuery(apiBody, className);
+    } else if (apiBody.method === 'POST') {
+        switch (apiBody.req_body_type) {
+            case 'form':
+                model = processForm(apiBody, className);
+                break;
+            case 'file':
+                model = processFile(className);
+                break;
+            case 'raw':
+                model = processRaw(className);
+                break;
+            case 'json':
+                var jsonParam = JSON.parse(apiBody.req_body_other);
+                model = processJson(className, jsonParam);
+                break;
+            default:
+                break;
+        }
     }
     model.fatherClass = baseRequest;
     return model;

@@ -1,4 +1,4 @@
-const { bigCamelCase } = require('../utils/stringUtils');
+const { bigCamelCase, javaClassName, ocClassName } = require('../utils/stringUtils');
 
 class DataType {
 
@@ -78,22 +78,22 @@ class DataType {
     }
 
     static get(type) {
-        type = type.toLowerCase();
-        if(!this.mapper[type]) {
+        let dataType = type.toLowerCase();
+        if(!this.mapper[dataType]) {
             return {
                 isBase: false,
                 java: bigCamelCase(type),
                 oc: bigCamelCase(type)
             };
         }
-        return this.mapper[type];
+        return this.mapper[dataType];
     }
 
     static other(javaType, ocType) {
         return {
             isBase: false,
-            java: bigCamelCase(javaType),
-            oc: bigCamelCase(ocType)
+            java: javaClassName(javaType),
+            oc: ocClassName(ocType)
         };
     }
 }
